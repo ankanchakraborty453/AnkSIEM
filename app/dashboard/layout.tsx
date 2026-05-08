@@ -1,5 +1,5 @@
 import { Bell, Search } from "lucide-react";
-import { Sidebar } from "@/components/sidebar";
+import { MobileNav, Sidebar } from "@/components/sidebar";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -19,6 +19,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
           </div>
         </header>
+        <MobileNav />
         <div className="p-5 lg:p-8">{children}</div>
       </main>
     </div>

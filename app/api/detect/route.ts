@@ -3,6 +3,8 @@ import { evaluateLog } from "@/lib/detection/alertEngine";
 import { createServiceClient } from "@/lib/supabase/server";
 import type { SecurityLog } from "@/types/log";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(request: Request) {
   try {
     const { logId } = (await request.json()) as { logId?: string };

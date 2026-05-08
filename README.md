@@ -52,6 +52,12 @@ npm run dev
 
 Open `http://localhost:3000/dashboard`.
 
+Production URL:
+
+```txt
+https://anksiem.vercel.app
+```
+
 ## Ingest Example
 
 ```bash
@@ -67,6 +73,20 @@ curl -X POST http://localhost:3000/api/ingest \
     "severity": "high"
   }'
 ```
+
+## Threat Lab
+
+The hosted dashboard includes `/dashboard/threat-lab`, a safe simulator that sends synthetic log events through `POST /api/ingest`.
+
+Available scenarios:
+
+- Brute force login burst
+- External port scan
+- Malware detection
+- Unusual login location
+- Custom JSON event injection
+
+After a scenario runs, review `/dashboard/alerts`, `/dashboard/logs`, `/dashboard/suspicious-ips`, and `/dashboard/analytics` to confirm the detection path.
 
 ## Project Structure
 

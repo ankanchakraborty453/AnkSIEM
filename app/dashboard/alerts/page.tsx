@@ -1,5 +1,7 @@
-import { AlertTable } from "@/components/dashboard/AlertTable";
+import { AlertConsole } from "@/components/dashboard/AlertConsole";
 import { getAlerts } from "@/lib/data";
+
+export const dynamic = "force-dynamic";
 
 export default async function AlertsPage() {
   const alerts = await getAlerts();
@@ -12,7 +14,7 @@ export default async function AlertsPage() {
         <h1 className="text-2xl font-semibold text-white">Alerts</h1>
         <p className="mt-1 text-sm text-muted-foreground">{openAlerts.length} open alerts, {resolvedAlerts.length} resolved.</p>
       </div>
-      <AlertTable alerts={alerts} />
+      <AlertConsole alerts={alerts} />
     </div>
   );
 }

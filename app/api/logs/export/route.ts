@@ -1,5 +1,7 @@
 import { getLogs } from "@/lib/data";
 
+export const dynamic = "force-dynamic";
+
 function csvEscape(value: unknown) {
   const text = value == null ? "" : String(value);
   return `"${text.replaceAll('"', '""')}"`;

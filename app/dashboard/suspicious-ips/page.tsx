@@ -1,6 +1,8 @@
 import { SuspiciousIPTable } from "@/components/dashboard/SuspiciousIPTable";
 import { getSuspiciousIps } from "@/lib/data";
 
+export const dynamic = "force-dynamic";
+
 export default async function SuspiciousIpsPage() {
   const ips = await getSuspiciousIps();
 

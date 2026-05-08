@@ -51,3 +51,29 @@ export function Sidebar() {
     </aside>
   );
 }
+
+export function MobileNav() {
+  const pathname = usePathname();
+
+  return (
+    <nav className="flex gap-2 overflow-x-auto border-b border-border bg-black/20 px-4 py-3 lg:hidden">
+      {links.map((link) => {
+        const Icon = link.icon;
+        const active = pathname === link.href;
+        return (
+          <Link
+            key={link.href}
+            href={link.href}
+            className={cn(
+              "inline-flex shrink-0 items-center gap-2 rounded-md border border-transparent px-3 py-2 text-xs text-slate-300",
+              active && "border-cyan-400/30 bg-cyan-400/10 text-cyan-100"
+            )}
+          >
+            <Icon className="h-4 w-4" />
+            {link.label}
+          </Link>
+        );
+      })}
+    </nav>
+  );
+}
