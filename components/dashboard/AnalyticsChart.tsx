@@ -81,12 +81,12 @@ export function TopIpsChart({ data }: { data: Array<{ name: string; score: numbe
       <CardHeader>
         <CardTitle>Top Suspicious IPs</CardTitle>
       </CardHeader>
-      <CardContent className="h-72">
+      <CardContent className="h-64 sm:h-72">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} layout="vertical" margin={{ left: 24 }}>
-            <CartesianGrid stroke="#1e293b" />
-            <XAxis type="number" stroke="#94a3b8" fontSize={12} domain={[0, 100]} />
-            <YAxis dataKey="name" type="category" stroke="#94a3b8" fontSize={11} width={112} />
+          <BarChart data={data} layout="vertical" margin={{ left: 8, right: 16 }}>
+            <CartesianGrid stroke="#1e293b" horizontal={false} />
+            <XAxis type="number" stroke="#94a3b8" fontSize={10} domain={[0, 100]} />
+            <YAxis dataKey="name" type="category" stroke="#94a3b8" fontSize={10} width={80} />
             <Tooltip contentStyle={{ background: "#0f172a", border: "1px solid #1e293b" }} />
             <Bar dataKey="score" fill="#fb7185" radius={[0, 4, 4, 0]} />
           </BarChart>

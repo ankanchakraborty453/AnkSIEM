@@ -27,7 +27,7 @@ export function AlertConsole({ alerts }: { alerts: SecurityAlert[] }) {
   return (
     <Card>
       <CardHeader className="space-y-3">
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <CardTitle>Alert Console</CardTitle>
           <div className="flex rounded-md border border-border bg-black/20 p-1 text-sm">
             {["open", "resolved", "all"].map((item) => (
@@ -42,7 +42,7 @@ export function AlertConsole({ alerts }: { alerts: SecurityAlert[] }) {
           </div>
         </div>
         <label className="flex items-center gap-2 rounded-md border border-border bg-black/20 px-3 py-2 text-sm text-muted-foreground">
-          <Search className="h-4 w-4" />
+          <Search className="h-4 w-4 shrink-0" />
           <input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
@@ -51,34 +51,57 @@ export function AlertConsole({ alerts }: { alerts: SecurityAlert[] }) {
           />
         </label>
       </CardHeader>
-      <CardContent className="overflow-x-auto p-0">
-        <table className="w-full min-w-[850px] text-left text-sm">
-          <thead className="border-b border-border text-xs uppercase tracking-wide text-muted-foreground">
-            <tr>
-              <th className="px-4 py-3">Created</th>
-              <th className="px-4 py-3">Alert</th>
-              <th className="px-4 py-3">Severity</th>
-              <th className="px-4 py-3">IP</th>
-              <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredAlerts.map((alert) => (
-              <tr key={alert.id} className="border-b border-border/70">
-                <td className="px-4 py-3 text-muted-foreground">{formatDate(alert.created_at)}</td>
-                <td className="px-4 py-3">
-                  <div className="font-medium text-slate-100">{alert.title}</div>
-                  <div className="text-xs text-muted-foreground">{alert.description}</div>
-                </td>
-                <td className="px-4 py-3"><Badge tone={alert.severity}>{alert.severity}</Badge></td>
-                <td className="px-4 py-3 font-mono text-cyan-200">{alert.ip_address ?? "-"}</td>
-                <td className="px-4 py-3"><Badge tone={alert.status}>{alert.status}</Badge></td>
-                <td className="px-4 py-3"><ResolveAlertButton id={alert.id} disabled={alert.status === "resolved"} /></td>
+      <CardContent className="p-0">
+        {/* Desktop table */}
+        <div className="hidden overflow-x-auto md:block">
+          <table className="w-full min-w-[850px] text-left text-sm">
+            <thead className="border-b border-border text-xs uppercase tracking-wide text-muted-foreground">
+              <tr>
+                <th className="px-4 py-3">Created</th>
+                <th className="px-4 py-3">Alert</th>
+                <th className="px-4 py-3">Severity</th>
+                <th className="px-4 py-3">IP</th>
+                <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredAlerts.map((alert) => (
+                <tr key={alert.id} className="border-b border-border/70">
+                  <td className="px-4 py-3 text-muted-foreground">{formatDate(alert.created_at)}</td>
+                  <td className="px-4 py-3">
+                    <div className="font-medium text-slate-100">{alert.title}</div>
+                    <div className="text-xs text-muted-foreground">{alert.description}</div>
+                  </td>
+                  <td className="px-4 py-3"><Badge tone={alert.severity}>{alert.severity}</Badge></td>
+                  <td className="px-4 py-3 font-mono text-cyan-200">{alert.ip_address ?? "-"}</td>
+                  <td className="px-4 py-3"><Badge tone={alert.status}>{alert.status}</Badge></td>
+                  <td className="px-4 py-3"><ResolveAlertButton id={alert.id} disabled={alert.status === "resolved"} /></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {/* Mobile card list */}
+        <div className="divide-y divide-border md:hidden">
+          {filteredAlerts.map((alert) => (
+            <div key={alert.id} className="space-y-2 px-4 py-3">
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0 flex-1">
+                  <p className="font-medium text-slate-100">{alert.title}</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground line-clamp-2">{alert.description}</p>
+                </div>
+                <Badge tone={alert.severity}>{alert.severity}</Badge>
+              </div>
+              <div className="flex flex-wrap items-center gap-2 text-xs">
+                {alert.ip_address && <span className="font-mono text-cyan-200">{alert.ip_address}</span>}
+                <Badge tone={alert.status}>{alert.status}</Badge>
+                <span className="text-muted-foreground/60">{formatDate(alert.created_at)}</span>
+              </div>
+              <ResolveAlertButton id={alert.id} disabled={alert.status === "resolved"} />
+            </div>
+          ))}
+        </div>
         {filteredAlerts.length === 0 ? (
           <div className="p-8 text-center text-sm text-muted-foreground">No alerts match the current view.</div>
         ) : null}

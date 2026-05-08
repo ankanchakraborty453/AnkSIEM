@@ -19,14 +19,14 @@ export default async function DashboardPage() {
         <h1 className="text-2xl font-semibold text-white">Security Overview</h1>
         <p className="mt-1 text-sm text-muted-foreground">Real-time signal across logs, alerts, and watchlisted infrastructure.</p>
       </div>
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         <StatCard label="Total Logs" value={summary.totalLogs} helper="Collected security events" icon={Database} />
         <StatCard label="Open Alerts" value={summary.openAlerts} helper={`${summary.totalAlerts} total detections`} icon={ShieldAlert} tone="text-rose-300" />
         <StatCard label="Critical" value={summary.criticalAlerts} helper="Needs immediate review" icon={AlertTriangle} tone="text-red-300" />
         <StatCard label="High-Risk IPs" value={summary.highRiskIps} helper={`${summary.suspiciousIps} tracked sources`} icon={RadioTower} tone="text-amber-300" />
         <StatCard label="Failed Logins" value={summary.failedLogins} helper="Authentication failures" icon={XCircle} tone="text-orange-300" />
       </section>
-      <section className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+      <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
         <ThreatActivityChart data={activity} />
         <AlertTable alerts={alerts.slice(0, 4)} />
       </section>

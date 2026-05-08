@@ -239,18 +239,18 @@ export default function ThreatLabPage() {
           <p className="mt-1 text-sm text-muted-foreground">Generate safe synthetic security events against the live SIEM pipeline.</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <button onClick={refreshStats} className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm text-slate-200 hover:bg-white/5">
+          <button onClick={refreshStats} className="flex flex-1 items-center justify-center gap-2 rounded-md border border-border px-3 py-2 text-sm text-slate-200 hover:bg-white/5 sm:flex-initial">
             <RefreshCcw className="h-4 w-4" />
             Refresh Metrics
           </button>
-          <Link href="/dashboard/alerts" className="inline-flex items-center gap-2 rounded-md border border-cyan-400/30 bg-cyan-400/10 px-3 py-2 text-sm text-cyan-100 hover:bg-cyan-400/15">
+          <Link href="/dashboard/alerts" className="flex flex-1 items-center justify-center gap-2 rounded-md border border-cyan-400/30 bg-cyan-400/10 px-3 py-2 text-sm text-cyan-100 hover:bg-cyan-400/15 sm:flex-initial">
             <ShieldAlert className="h-4 w-4" />
             Review Alerts
           </Link>
         </div>
       </div>
 
-      <section className="grid gap-4 md:grid-cols-3">
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Card className="p-4">
           <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Lab Status</p>
           <p className="mt-3 text-2xl font-semibold text-white">{running ? "Running" : "Ready"}</p>
@@ -261,7 +261,7 @@ export default function ThreatLabPage() {
           <p className="mt-3 text-2xl font-semibold text-white">{stats?.openAlerts ?? "-"}</p>
           <p className="mt-2 text-sm text-muted-foreground">Refresh after a simulation to confirm alerting.</p>
         </Card>
-        <Card className="p-4">
+        <Card className="p-4 sm:col-span-2 lg:col-span-1">
           <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">High-Risk IPs</p>
           <p className="mt-3 text-2xl font-semibold text-white">{stats?.highRiskIps ?? "-"}</p>
           <p className="mt-2 text-sm text-muted-foreground">{stats ? `${stats.totalLogs} total logs indexed.` : "Connected through /api/stats."}</p>
@@ -274,7 +274,7 @@ export default function ThreatLabPage() {
             <Activity className="h-4 w-4" />
             Attack Scenarios
           </h2>
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2">
             {ATTACKS.map((attack) => (
               <Card key={attack.id} className="p-5">
                 <div className="flex items-start gap-4">
@@ -316,7 +316,7 @@ export default function ThreatLabPage() {
               <button
                 onClick={runCustomEvent}
                 disabled={Boolean(running)}
-                className="inline-flex items-center gap-2 rounded-md border border-cyan-400/30 bg-cyan-400/10 px-3 py-2 text-sm text-cyan-100 hover:bg-cyan-400/15 disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-cyan-400/30 bg-cyan-400/10 px-3 py-2 text-sm text-cyan-100 hover:bg-cyan-400/15 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
               >
                 <FlaskConical className="h-4 w-4" />
                 Ingest Custom Event
@@ -331,25 +331,27 @@ export default function ThreatLabPage() {
             Execution Console
           </h2>
           <Card>
-            <CardContent className="min-h-[520px] p-4 font-mono text-xs">
+            <CardContent className="min-h-[400px] p-2 font-mono text-[10px] sm:min-h-[520px] sm:p-4 sm:text-xs">
               {results.length === 0 ? (
-                <div className="flex min-h-[480px] items-center justify-center text-muted-foreground">
+                <div className="flex min-h-[380px] items-center justify-center text-muted-foreground sm:min-h-[480px]">
                   Waiting for simulation execution...
                 </div>
               ) : (
                 <div className="space-y-3">
                   {results.map((result, index) => (
-                    <div key={`${result.id}-${index}`} className="rounded-md border border-border bg-black/30 p-3">
+                    <div key={`${result.id}-${index}`} className="rounded-md border border-border bg-black/30 p-2 sm:p-3">
                       <div className="flex items-start gap-2">
-                        <span className="text-muted-foreground">[{result.time}]</span>
+                        <span className="shrink-0 text-muted-foreground">[{result.time}]</span>
                         {result.success ? (
-                          <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-300" />
+                          <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-300 sm:h-4 sm:w-4" />
                         ) : (
-                          <AlertCircle className="h-4 w-4 shrink-0 text-red-300" />
+                          <AlertCircle className="h-3.5 w-3.5 shrink-0 text-red-300 sm:h-4 sm:w-4" />
                         )}
-                        <div>
-                          <div className={result.success ? "text-emerald-200" : "text-red-200"}>{result.title}: {result.message}</div>
-                          {result.details ? <div className="mt-1 text-muted-foreground">{result.details}</div> : null}
+                        <div className="min-w-0 flex-1">
+                          <div className={cn("break-words", result.success ? "text-emerald-200" : "text-red-200")}>
+                            {result.title}: {result.message}
+                          </div>
+                          {result.details ? <div className="mt-1 break-words text-muted-foreground">{result.details}</div> : null}
                         </div>
                       </div>
                     </div>
