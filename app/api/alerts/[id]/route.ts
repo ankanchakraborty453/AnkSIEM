@@ -1,0 +1,28 @@
+import { NextResponse } from "next/server";
+import { createServiceClient } from "@/lib/supabase/server";
+
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const { status } = (await request.json()) as { status?: string };
+    if (!status) return NextResponse.json({ error: "status is required" }, { status: 400 });
+
+    const { data, error } = await createServiceClient()
+      .from("alerts")
+      .update({ status })
+      .eq("id", id)
+      .select("*")
+      .single();
+
+    if (error) throw error;
+    return NextResponse.json({ alert: data });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Failed to update alert" },
+      { status: 500 }
+    );
+  }
+}
