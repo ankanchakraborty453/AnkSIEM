@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AlertTriangle, BarChart3, LayoutDashboard, ListFilter, RadioTower, Settings, Shield } from "lucide-react";
+import { AlertTriangle, BarChart3, LayoutDashboard, ListFilter, RadioTower, Settings, Shield, ShieldAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -10,6 +10,7 @@ const links = [
   { href: "/dashboard/logs", label: "Logs", icon: ListFilter },
   { href: "/dashboard/alerts", label: "Alerts", icon: AlertTriangle },
   { href: "/dashboard/suspicious-ips", label: "Suspicious IPs", icon: RadioTower },
+  { href: "/dashboard/threat-lab", label: "Threat Lab", icon: ShieldAlert },
   { href: "/dashboard/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/dashboard/settings", label: "Settings", icon: Settings }
 ];

@@ -1,3 +1,5 @@
+"use client";
+
 import { Shield } from "lucide-react";
 
 export default function LoginPage() {
@@ -18,6 +20,40 @@ export default function LoginPage() {
         <button className="mt-6 w-full rounded-md bg-cyan-400 px-4 py-2 font-medium text-slate-950 hover:bg-cyan-300">
           Sign in
         </button>
+
+        <div className="mt-8 border-t border-border pt-6">
+          <p className="text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground/60">Simulation Mode</p>
+          <div className="mt-4 grid grid-cols-2 gap-3">
+            <button 
+              type="button"
+              onClick={async () => {
+                await fetch("/api/ingest", {
+                  method: "POST",
+                  body: JSON.stringify({
+                    source: "auth-service",
+                    event_type: "LOGIN_FAILED",
+                    username: "guest_user",
+                    ip_address: "1.1.1.1",
+                    status: "failed",
+                    severity: "low",
+                    message: "Manual test from login page"
+                  })
+                });
+                alert("Simulated failed login recorded!");
+              }}
+              className="rounded-md border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs font-medium text-red-400 hover:bg-red-500/20"
+            >
+              Simulate Failure
+            </button>
+            <button 
+              type="button"
+              onClick={() => window.location.href = "/dashboard"}
+              className="rounded-md border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-medium text-emerald-400 hover:bg-emerald-500/20"
+            >
+              Demo Access
+            </button>
+          </div>
+        </div>
       </form>
     </main>
   );
