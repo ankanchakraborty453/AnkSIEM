@@ -46,7 +46,11 @@ export function createServiceClient() {
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY ?? getPublishableKey();
 
   if (!url || !key) {
-    throw new Error("Missing Supabase route environment variables");
+    const missing = [
+      !url && "NEXT_PUBLIC_SUPABASE_URL",
+      !key && "SUPABASE_SERVICE_ROLE_KEY or NEXT_PUBLIC_SUPABASE_ANON_KEY"
+    ].filter(Boolean).join(", ");
+    throw new Error(`Missing Supabase env vars: ${missing}. Add them in Vercel → Settings → Environment Variables.`);
   }
 
   return createSupabaseClient(url, key, {
