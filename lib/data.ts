@@ -1,11 +1,7 @@
 import { demoAlerts, demoLogs, demoSuspiciousIps } from "@/lib/demo-data";
-import { createServiceClient } from "@/lib/supabase/server";
+import { createServiceClient, hasSupabaseEnv } from "@/lib/supabase/server";
 import type { SecurityAlert, SuspiciousIP } from "@/types/alert";
 import type { SecurityLog } from "@/types/log";
-
-function hasSupabaseEnv() {
-  return Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
-}
 
 export async function getLogs(): Promise<SecurityLog[]> {
   if (!hasSupabaseEnv()) return demoLogs;

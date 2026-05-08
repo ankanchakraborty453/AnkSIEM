@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { evaluateLog } from "@/lib/detection/alertEngine";
-import { createServiceClient } from "@/lib/supabase/server";
+import { createServiceClient, hasServiceRoleKey } from "@/lib/supabase/server";
 import type { NewSecurityLog, SecurityLog } from "@/types/log";
 
 export const dynamic = "force-dynamic";
@@ -24,6 +24,23 @@ export async function POST(request: Request) {
       message: body.message ?? null,
       severity: body.severity ?? "low"
     };
+
+    const { data: rpcData, error: rpcError } = await supabase.rpc("ingest_security_log", {
+      p_source: payload.source,
+      p_event_type: payload.event_type,
+      p_timestamp: payload.timestamp,
+      p_username: payload.username,
+      p_ip_address: payload.ip_address,
+      p_status: payload.status,
+      p_message: payload.message,
+      p_severity: payload.severity
+    });
+
+    if (!rpcError) {
+      return NextResponse.json(rpcData, { status: 201 });
+    }
+
+    if (!hasServiceRoleKey()) throw rpcError;
 
     const { data, error } = await supabase.from("logs").insert(payload).select("*").single();
     if (error) throw error;

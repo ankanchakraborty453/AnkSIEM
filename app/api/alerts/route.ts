@@ -28,6 +28,11 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ error: "id and status are required" }, { status: 400 });
     }
 
+    if (status === "resolved") {
+      const { data, error } = await createServiceClient().rpc("resolve_alert", { p_alert_id: id });
+      if (!error) return NextResponse.json({ alert: data });
+    }
+
     const { data, error } = await createServiceClient()
       .from("alerts")
       .update({ status })

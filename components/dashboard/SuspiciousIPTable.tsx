@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
 import { riskLevel } from "@/lib/detection/suspiciousIP";
+import { SuspiciousIPActions } from "@/components/dashboard/SuspiciousIPActions";
 import type { SuspiciousIP } from "@/types/alert";
 
 export function SuspiciousIPTable({ ips }: { ips: SuspiciousIP[] }) {
@@ -20,6 +21,7 @@ export function SuspiciousIPTable({ ips }: { ips: SuspiciousIP[] }) {
               <th className="px-4 py-3">Country</th>
               <th className="px-4 py-3">Last Seen</th>
               <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -38,6 +40,7 @@ export function SuspiciousIPTable({ ips }: { ips: SuspiciousIP[] }) {
                 <td className="px-4 py-3">{ip.country ?? "-"}</td>
                 <td className="px-4 py-3 text-muted-foreground">{formatDate(ip.last_seen)}</td>
                 <td className="px-4 py-3">{ip.status}</td>
+                <td className="px-4 py-3"><SuspiciousIPActions ipAddress={ip.ip_address} status={ip.status} /></td>
               </tr>
             ))}
           </tbody>

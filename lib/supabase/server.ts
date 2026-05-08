@@ -6,6 +6,14 @@ function getPublishableKey() {
   return process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 }
 
+export function hasSupabaseEnv() {
+  return Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && (process.env.SUPABASE_SERVICE_ROLE_KEY || getPublishableKey()));
+}
+
+export function hasServiceRoleKey() {
+  return Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY);
+}
+
 export async function createClient() {
   const cookieStore = await cookies();
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -35,13 +43,13 @@ export async function createClient() {
 
 export function createServiceClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY ?? getPublishableKey();
 
   if (!url || !key) {
-    throw new Error("Missing Supabase service environment variables");
+    throw new Error("Missing Supabase route environment variables");
   }
 
   return createSupabaseClient(url, key, {
-    auth: { persistSession: false }
+    auth: { autoRefreshToken: false, persistSession: false }
   });
 }

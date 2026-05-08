@@ -12,6 +12,11 @@ export async function PATCH(
     const { status } = (await request.json()) as { status?: string };
     if (!status) return NextResponse.json({ error: "status is required" }, { status: 400 });
 
+    if (status === "resolved") {
+      const { data, error } = await createServiceClient().rpc("resolve_alert", { p_alert_id: id });
+      if (!error) return NextResponse.json({ alert: data });
+    }
+
     const { data, error } = await createServiceClient()
       .from("alerts")
       .update({ status })

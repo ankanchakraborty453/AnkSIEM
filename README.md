@@ -17,6 +17,10 @@ AnkSIEM is a simplified SIEM dashboard inspired by tools like Splunk. It collect
 - Failed login detection for 5 or more failures from the same IP in 10 minutes
 - Suspicious IP scoring and watchlisting
 - Alert generation and alert status updates
+- Supabase Auth sign-in/sign-up
+- Supabase Realtime dashboard refresh
+- Suspicious IP block/clear workflow
+- Health endpoint at `GET /api/health`
 - Dashboard, logs, alerts, suspicious IPs, analytics, and settings pages
 - Demo data fallback before Supabase credentials are configured
 
@@ -32,7 +36,7 @@ Create `.env.local` from `.env.example`:
 
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 DATABASE_URL=
 ```
@@ -41,8 +45,11 @@ Run the database SQL in Supabase:
 
 ```bash
 sql/schema.sql
+sql/2026-05-09-functional-supabase.sql
 sql/seed.sql
 ```
+
+`SUPABASE_SERVICE_ROLE_KEY` is optional for the public demo flow. If it is not set, `/api/ingest`, alert resolution, and suspicious-IP actions use validated Supabase RPC functions with the publishable key.
 
 Start the app:
 
@@ -87,6 +94,20 @@ Available scenarios:
 - Custom JSON event injection
 
 After a scenario runs, review `/dashboard/alerts`, `/dashboard/logs`, `/dashboard/suspicious-ips`, and `/dashboard/analytics` to confirm the detection path.
+
+## Runtime Endpoints
+
+```txt
+POST  /api/ingest
+GET   /api/logs
+GET   /api/logs/export
+GET   /api/alerts
+PATCH /api/alerts/:id
+GET   /api/suspicious-ips
+PATCH /api/suspicious-ips/:ip
+GET   /api/stats
+GET   /api/health
+```
 
 ## Project Structure
 

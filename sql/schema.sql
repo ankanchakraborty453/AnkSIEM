@@ -39,6 +39,7 @@ create table if not exists suspicious_ips (
 create index if not exists logs_timestamp_idx on logs (timestamp desc);
 create index if not exists logs_ip_idx on logs (ip_address);
 create index if not exists logs_event_type_idx on logs (event_type);
+create index if not exists alerts_log_id_idx on alerts (log_id);
 create index if not exists alerts_status_idx on alerts (status);
 create index if not exists suspicious_ips_risk_idx on suspicious_ips (risk_score desc);
 
