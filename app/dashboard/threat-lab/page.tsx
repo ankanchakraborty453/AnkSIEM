@@ -110,9 +110,19 @@ export default function ThreatLabPage() {
         if (attack.count > 1) await new Promise(r => setTimeout(r, 500));
       }
       
-      newResults.unshift({ id: attack.id, success: true, msg: `Successfully triggered ${attack.title}` });
+      newResults.unshift({ 
+        id: attack.id, 
+        success: true, 
+        msg: `Successfully triggered ${attack.title}`,
+        time: new Date().toLocaleTimeString()
+      });
     } catch (err) {
-      newResults.unshift({ id: attack.id, success: false, msg: `Failed to trigger ${attack.title}` });
+      newResults.unshift({ 
+        id: attack.id, 
+        success: false, 
+        msg: `Failed to trigger ${attack.title}`,
+        time: new Date().toLocaleTimeString()
+      });
     } finally {
       setResults(newResults.slice(0, 10)); // Keep last 10
       setRunning(null);
@@ -184,7 +194,7 @@ export default function ThreatLabPage() {
               <div className="space-y-2">
                 {results.map((res, i) => (
                   <div key={i} className="flex gap-2 animate-in fade-in slide-in-from-left-2 duration-300">
-                    <span className="text-muted-foreground">[{new Date().toLocaleTimeString()}]</span>
+                    <span className="text-muted-foreground">[{res.time}]</span>
                     {res.success ? (
                       <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
                     ) : (
