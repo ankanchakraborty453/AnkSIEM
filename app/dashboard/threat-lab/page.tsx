@@ -90,7 +90,7 @@ const ATTACKS = [
 
 export default function ThreatLabPage() {
   const [running, setRunning] = useState<string | null>(null);
-  const [results, setResults] = useState<{id: string, success: boolean, msg: string}[]>([]);
+  const [results, setResults] = useState<{id: string, success: boolean, msg: string, time: string}[]>([]);
 
   const runSimulation = async (attack: typeof ATTACKS[0]) => {
     setRunning(attack.id);
